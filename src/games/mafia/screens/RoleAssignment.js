@@ -17,7 +17,7 @@ const RoleAssignment = ({ players, onBeginGame }) => {
       <p>Pass the device to each player to reveal their role.</p>
       <div className="role-carousel">
         <button className="carousel-arrow" onClick={goToPrevPlayer}>&lt;</button>
-        <RoleCard player={players[currentPlayerIndex]} />
+        <RoleCard player={players[currentPlayerIndex]} playerNumber={currentPlayerIndex+1} />
         <button className="carousel-arrow" onClick={goToNextPlayer}>&gt;</button>
       </div>
       <div style={{ marginTop: '30px' }}>

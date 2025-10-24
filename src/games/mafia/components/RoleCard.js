@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import QRCode from 'react-qr-code';
 
-const RoleCard = ({ player }) => {
+const RoleCard = ({ player, playerNumber }) => {
   const [isRoleVisible, setIsRoleVisible] = useState(false);
   const roleRevealUrl = `${window.location.origin}/role-reveal?role=${player.role}`;
 
@@ -10,7 +10,7 @@ const RoleCard = ({ player }) => {
       <button className="toggle-role-btn" onClick={() => setIsRoleVisible(!isRoleVisible)}>
         {isRoleVisible ? 'Hide' : 'Show'}
       </button>
-      <div className="role-card-header">Player</div>
+      <div className="role-card-header">Player #{playerNumber}</div>
       <div className="role-card-name">{player.name}</div>
       <div className="role-reveal">
         {isRoleVisible ? player.role : <span className="role-hidden">*********</span>}

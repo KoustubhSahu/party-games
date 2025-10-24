@@ -1,8 +1,22 @@
 /* General Mafia Game Styles */
+/* IMPROVEMENT: Add dynamic background styles */
+body.day-bg {
+  background-color: #87CEEB; /* Sky Blue */
+  transition: background-color 0.5s ease;
+}
+
+body.night-bg {
+  background-color: #000080; /* Navy Blue */
+  transition: background-color 0.5s ease;
+}
+
+/* Ensure our container is transparent to see the body background */
 .mafia-container {
-  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 12px;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 5px auto; /* Add margin for better look */
   font-family: sans-serif;
   color: #333;
 }

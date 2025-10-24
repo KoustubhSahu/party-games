@@ -17,13 +17,14 @@ const initialPlayers = Array.from({ length: 5 }, (_, i) => ({
 }));
 
 const MafiaGame = () => {
-  const [gameState, setGameState] = useState('SETUP'); // SETUP, ROLE_ASSIGNMENT, GAME_CYCLE, GAME_OVER
+  const [gameState, setGameState] = useState('SETUP');
   const [players, setPlayers] = useState(initialPlayers);
   const [winner, setWinner] = useState(null);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [gamePhase, setGamePhase] = useState('');
 
+  // ... (useEffect hooks for win conditions and background remain the same) ...
   useEffect(() => {
-    // This effect runs after each state update to check for a winner
     if (gameState === 'GAME_CYCLE') {
       const gameWinner = checkWinConditions(players);
       if (gameWinner) {
@@ -33,13 +34,51 @@ const MafiaGame = () => {
     }
   }, [players, gameState]);
 
+  useEffect(() => {
+    const originalColor = document.body.style.backgroundColor;
+    if (gameState === 'GAME_CYCLE') {
+      if (gamePhase.startsWith('NIGHT')) {
+        document.body.classList.add('night-bg');
+        document.body.classList.remove('day-bg');
+      } else {
+        document.body.classList.add('day-bg');
+        document.body.classList.remove('night-bg');
+      }
+    } else {
+        document.body.classList.add('day-bg');
+        document.body.classList.remove('night-bg');
+    }
+    return () => {
+      document.body.style.backgroundColor = originalColor;
+      document.body.classList.remove('night-bg', 'day-bg');
+    };
+  }, [gameState, gamePhase]);
+
 
   const handleAssignRoles = () => {
-    if (players.some(p => p.name.trim() === '')) {
-      alert('Please enter a name for every player.');
+    // IMPROVEMENT: Trim names and assign default names to blank fields
+    const processedPlayers = players.map((p, index) => {
+      const trimmedName = p.name.trim();
+      return {
+        ...p,
+        // If the trimmed name is empty, assign 'Gumnam #', otherwise use the trimmed name
+        name: trimmedName === '' ? `Gumnam ${index + 1}` : trimmedName,
+      };
+    });
+
+    // We update the state here so the user sees the new "Gumnam" names in the UI
+    setPlayers(processedPlayers);
+
+    // Now, we perform the duplicate check on the processed names
+    const playerNames = processedPlayers.map(p => p.name.toLowerCase());
+    const hasDuplicates = new Set(playerNames).size !== playerNames.length;
+    if (hasDuplicates) {
+      alert('Player names must be unique. Please remove duplicate names.');
       return;
     }
-    const playersWithRoles = assignRoles(players);
+
+    // If all checks pass, assign roles and proceed
+    const playersWithRoles = assignRoles(processedPlayers);
     setPlayers(playersWithRoles);
     setGameState('ROLE_ASSIGNMENT');
   };
@@ -56,9 +95,8 @@ const MafiaGame = () => {
       }
       return gameWinner;
   };
-  
+
   const resetForNewGame = () => {
-    // Keep player names and count, but reset game-specific state
     setPlayers(players.map(p => ({ ...p, role: null, isAlive: true, votes: 0 })));
     setWinner(null);
     setGameState('SETUP');
@@ -71,7 +109,14 @@ const MafiaGame = () => {
       case 'ROLE_ASSIGNMENT':
         return <RoleAssignment players={players} onBeginGame={handleBeginGame} />;
       case 'GAME_CYCLE':
-        return <GameCycle players={players} setPlayers={setPlayers} onGameEnd={handleGameEnd} />;
+        return (
+          <GameCycle
+            players={players}
+            setPlayers={setPlayers}
+            onGameEnd={handleGameEnd}
+            onPhaseChange={setGamePhase}
+          />
+        );
       case 'GAME_OVER':
         return <GameOver winner={winner} onPlayAgain={resetForNewGame} />;
       default:
@@ -87,11 +132,11 @@ const MafiaGame = () => {
             <button className="btn btn-danger" style={{float: 'right'}} onClick={() => setShowExitModal(true)}>Exit Game</button>
          )}
       </div>
-     
+
       {renderGameState()}
 
       {showExitModal && (
-        <ConfirmationModal 
+        <ConfirmationModal
             message="Are you sure you want to exit? The current game will end."
             onConfirm={() => {
                 setShowExitModal(false);

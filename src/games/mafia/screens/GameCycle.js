@@ -1,37 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import PlayerSelection from '../components/PlayerSelection';
 
-const GameCycle = ({ players, setPlayers, onGameEnd }) => {
-  const [phase, setPhase] = useState('NIGHT_MAFIA');
+const GameCycle = ({ players, setPlayers, onGameEnd, onPhaseChange }) => {
+  const [phase, setPhase] = useState('NIGHT_MAFIA'); // NIGHT_MAFIA, NIGHT_DOCTOR, NIGHT_POLICE, DAY_REVEAL, DAY_VOTING, DAY_ELIMINATE
   const [nightActions, setNightActions] = useState({ mafiaKill: null, doctorSave: null, policeCheck: null });
-  
-  // IMPROVEMENT: Announcement is now an object to hold message and type
   const [announcement, setAnnouncement] = useState({ message: '', type: '' });
-  
   const [eliminatedPlayer, setEliminatedPlayer] = useState(null);
-  
+
   const alivePlayers = players.filter(p => p.isAlive);
 
+  // Effect to report the current phase back to the parent component (MafiaGame.js)
+  useEffect(() => {
+    if (onPhaseChange) {
+      onPhaseChange(phase);
+    }
+  }, [phase, onPhaseChange]);
+
+  // Effect to process night actions when moving to the DAY_REVEAL phase
   useEffect(() => {
     if (phase === 'DAY_REVEAL') {
       let victim = players.find(p => p.id === nightActions.mafiaKill);
       if (victim && nightActions.mafiaKill !== nightActions.doctorSave) {
         setPlayers(players.map(p => p.id === nightActions.mafiaKill ? { ...p, isAlive: false } : p));
-        // IMPROVEMENT: Set message and a 'death' type for red background
         setAnnouncement({ message: `${victim.name} was killed last night.`, type: 'death' });
       } else {
-        // IMPROVEMENT: Set message and a 'success' type for green background
         setAnnouncement({ message: 'The Doctor made a successful save! No one died.', type: 'success' });
       }
     }
-  }, [phase]);
+  }, [phase]); // Dependency array ensures this only runs when 'phase' changes
 
   const handleSelect = (playerId) => {
     if (phase === 'NIGHT_MAFIA') setNightActions({ ...nightActions, mafiaKill: playerId });
     if (phase === 'NIGHT_DOCTOR') setNightActions({ ...nightActions, doctorSave: playerId });
     if (phase === 'NIGHT_POLICE') setNightActions({ ...nightActions, policeCheck: playerId });
   };
-  
+
   const resetVotes = () => {
     setPlayers(players.map(p => ({ ...p, votes: 0 })));
   };
@@ -41,13 +44,12 @@ const GameCycle = ({ players, setPlayers, onGameEnd }) => {
     if (phase === 'NIGHT_DOCTOR') setPhase('NIGHT_POLICE');
     if (phase === 'NIGHT_POLICE') setPhase('DAY_REVEAL');
     if (phase === 'DAY_REVEAL') {
-        // IMPROVEMENT: Reset votes automatically when moving to the voting phase
-        resetVotes();
+        resetVotes(); // Automatically reset votes before voting starts
         setPhase('DAY_VOTING');
     }
     if (phase === 'DAY_ELIMINATE') {
-        const winner = onGameEnd();
-        if (!winner) {
+        const winner = onGameEnd(); // Check for a winner after elimination
+        if (!winner) { // If no winner, start the next cycle
             setPhase('NIGHT_MAFIA');
             setNightActions({ mafiaKill: null, doctorSave: null, policeCheck: null });
             setAnnouncement({ message: '', type: '' });
@@ -57,7 +59,7 @@ const GameCycle = ({ players, setPlayers, onGameEnd }) => {
   };
 
   const handleVote = (playerId, delta) => {
-    setPlayers(players.map(p => 
+    setPlayers(players.map(p =>
       p.id === playerId ? { ...p, votes: Math.max(0, p.votes + delta) } : p
     ));
   };
@@ -93,14 +95,12 @@ const GameCycle = ({ players, setPlayers, onGameEnd }) => {
         return (
           <>
             <h2>Night Time: Mafia Phase</h2>
-            {/* IMPROVEMENT: Removed the names of the mafia members */}
             <p>Ask the Mafia to wake up and select a player to kill.</p>
-            <PlayerSelection 
-                players={alivePlayers} 
-                onSelect={handleSelect} 
+            <PlayerSelection
+                players={alivePlayers}
+                onSelect={handleSelect}
                 selected={nightActions.mafiaKill}
-                // IMPROVEMENT: Pass style prop for red selection
-                selectionStyle="mafia" 
+                selectionStyle="mafia"
             />
             <button className="btn btn-primary" onClick={nextPhase} disabled={!nightActions.mafiaKill}>Confirm Kill</button>
           </>
@@ -110,12 +110,11 @@ const GameCycle = ({ players, setPlayers, onGameEnd }) => {
           <>
             <h2>Night Time: Doctor Phase</h2>
             <p>Ask the Doctor who they want to save.</p>
-            <PlayerSelection 
-                players={alivePlayers} 
-                onSelect={handleSelect} 
-                selected={nightActions.doctorSave} 
+            <PlayerSelection
+                players={alivePlayers}
+                onSelect={handleSelect}
+                selected={nightActions.doctorSave}
                 mafiaTarget={nightActions.mafiaKill}
-                // IMPROVEMENT: Pass style prop for green selection
                 selectionStyle="doctor"
             />
             <button className="btn btn-primary" onClick={nextPhase} disabled={!nightActions.doctorSave}>Confirm Save</button>
@@ -136,7 +135,6 @@ const GameCycle = ({ players, setPlayers, onGameEnd }) => {
         return (
             <>
                 <h2>Morning Time</h2>
-                {/* IMPROVEMENT: Use the announcement object to set class and message */}
                 <div className={`day-announcement ${announcement.type}`}>
                     {announcement.message}
                 </div>
