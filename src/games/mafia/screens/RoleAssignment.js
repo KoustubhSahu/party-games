@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import RoleCard from '../components/RoleCard';
 
+// The image imports have been removed from this file.
+
 const RoleAssignment = ({ players, onBeginGame }) => {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
@@ -17,7 +19,7 @@ const RoleAssignment = ({ players, onBeginGame }) => {
       <p>Pass the device to each player to reveal their role.</p>
       <div className="role-carousel">
         <button className="carousel-arrow" onClick={goToPrevPlayer}>&lt;</button>
-        <RoleCard player={players[currentPlayerIndex]} playerNumber={currentPlayerIndex+1} />
+        <RoleCard player={players[currentPlayerIndex]} playerNumber={currentPlayerIndex + 1} />
         <button className="carousel-arrow" onClick={goToNextPlayer}>&gt;</button>
       </div>
       <div style={{ marginTop: '30px' }}>

@@ -142,6 +142,7 @@ body.night-bg {
   width: 350px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   position: relative;
+  text-align: center; /* This helps center the image and text */
 }
 
 .role-card-header {
@@ -309,8 +310,25 @@ body.night-bg {
     height: 100vh;
     text-align: center;
 }
+.role-reveal-image {
+    height: 120px;
+    width: 120px;
+    margin-bottom: 20px; /* Adds space between the image and the role text */
+    object-fit: contain; /* Prevents the image from being stretched or distorted */
+}
 .revealed-role {
     font-size: 3rem;
     font-weight: bold;
     margin-bottom: 30px;
+}
+
+
+/* Styles for phones */
+@media (max-width: 480px) {
+  .carousel-arrow {
+    padding: 0 5px;
+  }
+  .role-carousel {
+    gap: 10px;
+  }
 }
