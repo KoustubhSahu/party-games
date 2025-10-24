@@ -9,7 +9,7 @@ const RoleCard = ({ player, playerNumber }) => {
   const role = player ? player.role : 'Unknown';
   const playerName = player ? player.name : 'Loading...';
 
-  const roleRevealUrl = `${window.location.origin}${process.env.PUBLIC_URL}/role-reveal?role=${role}`;
+  const roleRevealUrl = `${window.location.origin}${process.env.PUBLIC_URL}/#/role-reveal?role=${role}`;
 
 
   const qrCodeComponent = <QRCode value={roleRevealUrl} size={128} />;

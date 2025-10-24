@@ -1,6 +1,8 @@
+// src/App.js
+
 import React from 'react';
-// Make sure BrowserRouter is imported as Router
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// 1. Change the import from BrowserRouter to HashRouter
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import HomePage from './components/HomePage';
 import MafiaGame from './games/mafia/MafiaGame';
@@ -8,8 +10,8 @@ import RoleRevealPage from './games/mafia/RoleRevealPage';
 
 function App() {
   return (
-    // IMPROVEMENT: Add the basename prop here
-    <Router basename="/party-games">
+    // 2. Change the component to Router (which is now HashRouter) and REMOVE the basename prop
+    <Router>
       <div className="App">
         <Routes>
           <Route path="/" element={<HomePage />} />
