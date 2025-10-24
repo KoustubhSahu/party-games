@@ -4,7 +4,7 @@ import QRCode from 'react-qr-code';
 
 const RoleCard = ({ player, playerNumber }) => {
   const [isRoleVisible, setIsRoleVisible] = useState(false);
-  const clickableQrCode = true;
+  const clickableQrCode = false; // Set to true if you want the QR code to be clickable
 
   const role = player ? player.role : 'Unknown';
   const playerName = player ? player.name : 'Loading...';
