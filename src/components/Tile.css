@@ -1,0 +1,60 @@
+.tile {
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  align-items: flex-end;
+  text-align: left;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.tile:hover {
+  transform: translateY(-10px);
+}
+
+.tile.white-background {
+  background-color: white;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.tile-content {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.white-background .tile-content {
+  background-color: transparent;
+}
+
+.tile h2 {
+  margin: 0 0 5px 0;
+  font-size: 1.5rem;
+}
+
+.tile p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Add this to your existing Tile.css file */
+.tile-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+  .tile {
+    width: 100%;
+    max-width: 350px;
+  }
+}
