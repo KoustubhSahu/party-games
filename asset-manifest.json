@@ -1,16 +1,20 @@
 {
   "files": {
-    "main.css": "/party-games/static/css/main.c5fa9703.css",
-    "main.js": "/party-games/static/js/main.16816583.js",
+    "main.css": "/party-games/static/css/main.8847140c.css",
+    "main.js": "/party-games/static/js/main.d3957603.js",
     "static/js/453.2e756bbb.chunk.js": "/party-games/static/js/453.2e756bbb.chunk.js",
-    "static/media/mafia-background.png": "/party-games/static/media/mafia-background.0555d855a587e50d2686.png",
+    "static/media/mafia-background.png": "/party-games/static/media/mafia-background.e7c29a3b29c6b6f565d8.png",
+    "static/media/stethoscope.png": "/party-games/static/media/stethoscope.0778d545fa2e1b9c66d5.png",
+    "static/media/magnifying-glass.png": "/party-games/static/media/magnifying-glass.d1d5a937bc29237ed717.png",
+    "static/media/pitchfork.png": "/party-games/static/media/pitchfork.40c46b7fbc1fbe07e27c.png",
+    "static/media/gun.png": "/party-games/static/media/gun.0934e477f43114308512.png",
     "index.html": "/party-games/index.html",
-    "main.c5fa9703.css.map": "/party-games/static/css/main.c5fa9703.css.map",
-    "main.16816583.js.map": "/party-games/static/js/main.16816583.js.map",
+    "main.8847140c.css.map": "/party-games/static/css/main.8847140c.css.map",
+    "main.d3957603.js.map": "/party-games/static/js/main.d3957603.js.map",
     "453.2e756bbb.chunk.js.map": "/party-games/static/js/453.2e756bbb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c5fa9703.css",
-    "static/js/main.16816583.js"
+    "static/css/main.8847140c.css",
+    "static/js/main.d3957603.js"
   ]
 }
